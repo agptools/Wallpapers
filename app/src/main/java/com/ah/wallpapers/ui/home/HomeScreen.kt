@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -104,7 +105,7 @@ fun CategoryTab(
             modifier = Modifier
                 .padding(8.dp)
                 .size(70.dp)
-                .clip(RoundedCornerShape(45.dp))
+                .clip(CircleShape)
                 .drawWithContent {
                     drawContent()
                     drawCircle(
@@ -175,7 +176,7 @@ private fun WallpaperList(
                                 .sharedBounds(
                                     sharedScope.rememberSharedContentState(key = wallpaper.thumbnailUrl),
                                     animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-                                    clipInOverlayDuringTransition = OverlayClip(clipShape)
+                                    clipInOverlayDuringTransition = OverlayClip(clipShape),
                                 )
                                 .clickable {
                                     onItemClick(wallpaper)

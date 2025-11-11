@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.provider.MediaStore
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -112,7 +113,7 @@ fun WallpaperDetailScreen(
                 hostState = snackBarHostState,
                 modifier = Modifier.padding(bottom = 80.dp)
             )
-        }
+        },
     ) { innerPadding ->
         Box(
             modifier = Modifier.fillMaxSize()
