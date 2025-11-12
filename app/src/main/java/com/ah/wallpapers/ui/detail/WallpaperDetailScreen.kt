@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.provider.MediaStore
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -85,40 +84,47 @@ fun WallpaperDetailScreen(
     val appContext = LocalContext.current.applicationContext
     val snackBarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "WallPaper".uppercase(),
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBack,
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back),
-                            contentDescription = null
+    with(sharedScope) {
+        Scaffold(
+            modifier = Modifier
+                .sharedBounds(
+                    sharedContentState = sharedScope.rememberSharedContentState(
+                        key = wallpaperDetail.wallpaper.thumbnailUrl
+                    ),
+                    animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+                ),
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = "WallPaper".uppercase(),
                         )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = onBack,
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_back),
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                    )
                 )
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackBarHostState,
-                modifier = Modifier.padding(bottom = 80.dp)
-            )
-        },
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            with(sharedScope) {
+            },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackBarHostState,
+                    modifier = Modifier.padding(bottom = 80.dp)
+                )
+            },
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(wallpaperDetail.wallpaper.imageUrl)
@@ -132,97 +138,93 @@ fun WallpaperDetailScreen(
                         bitmap = it.result.image.toBitmap()
                     },
                     modifier = Modifier
-                        .fillMaxSize()
-                        .sharedBounds(
-                            sharedScope.rememberSharedContentState(key = wallpaperDetail.wallpaper.thumbnailUrl),
-                            animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-                        ),
+                        .fillMaxSize(),
                 )
-            }
 
-            if (isShowLoading) {
-                FullscreenLoadingIndicator()
-            }
-
-            if (isShowDialog) {
-                SetWallpaperDialog(
-                    onDismissRequest = { isShowDialog = false },
-                    onHomeScreen = {
-                        coroutineScope.launch {
-                            isShowDialog = false
-                            isShowLoading = true
-                            val success = setImageToWallpaper(appContext, bitmap, WallpaperManager.FLAG_SYSTEM).getOrNull() ?: false
-                            isShowLoading = false
-                            if (success) {
-                                snackBarHostState.showSnackbar("Wallpaper set successfully")
-                            } else {
-                                snackBarHostState.showSnackbar("Failed to set wallpaper")
-                            }
-                        }
-                    },
-                    onLockScreen = {
-                        coroutineScope.launch {
-                            isShowDialog = false
-                            isShowLoading = true
-                            val success = setImageToWallpaper(appContext, bitmap, WallpaperManager.FLAG_LOCK).getOrNull() ?: false
-                            isShowLoading = false
-                            if (success) {
-                                snackBarHostState.showSnackbar("Wallpaper set successfully")
-                            } else {
-                                snackBarHostState.showSnackbar("Failed to set wallpaper")
-                            }
-                        }
-                    },
-                    onBoth = {
-                        coroutineScope.launch {
-                            isShowDialog = false
-                            isShowLoading = true
-                            val success = setImageToWallpaper(appContext, bitmap, WallpaperManager.FLAG_LOCK or WallpaperManager.FLAG_SYSTEM).getOrNull() ?: false
-                            isShowLoading = false
-                            if (success) {
-                                snackBarHostState.showSnackbar("Wallpaper set successfully")
-                            } else {
-                                snackBarHostState.showSnackbar("Failed to set wallpaper")
-                            }
-                        }
-                    }
-                )
-            }
-
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = innerPadding.calculateBottomPadding())
-                    .padding(bottom = 30.dp)
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                val textStyle = LocalTextStyle.current.copy(fontSize = 18.sp, fontFamily = mapleFamily)
-                Button(
-                    modifier = Modifier.weight(1f),
-                    onClick = {
-                        coroutineScope.launch {
-                            isShowLoading = true
-                            val success = saveImageToGallery(appContext, wallpaperDetail.wallpaper.name, bitmap).getOrNull() ?: false
-                            isShowLoading = false
-                            if (success) {
-                                snackBarHostState.showSnackbar("Wallpaper saved to gallery")
-                            } else {
-                                snackBarHostState.showSnackbar("Failed to save wallpaper")
-                            }
-                        }
-                    },
-                ) {
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                    Text("Download".uppercase(), style = textStyle)
+                if (isShowLoading) {
+                    FullscreenLoadingIndicator()
                 }
-                Button(
-                    modifier = Modifier.weight(1f),
-                    onClick = { isShowDialog = true }
+
+                if (isShowDialog) {
+                    SetWallpaperDialog(
+                        onDismissRequest = { isShowDialog = false },
+                        onHomeScreen = {
+                            coroutineScope.launch {
+                                isShowDialog = false
+                                isShowLoading = true
+                                val success = setImageToWallpaper(appContext, bitmap, WallpaperManager.FLAG_SYSTEM).getOrNull() ?: false
+                                isShowLoading = false
+                                if (success) {
+                                    snackBarHostState.showSnackbar("Wallpaper set successfully")
+                                } else {
+                                    snackBarHostState.showSnackbar("Failed to set wallpaper")
+                                }
+                            }
+                        },
+                        onLockScreen = {
+                            coroutineScope.launch {
+                                isShowDialog = false
+                                isShowLoading = true
+                                val success = setImageToWallpaper(appContext, bitmap, WallpaperManager.FLAG_LOCK).getOrNull() ?: false
+                                isShowLoading = false
+                                if (success) {
+                                    snackBarHostState.showSnackbar("Wallpaper set successfully")
+                                } else {
+                                    snackBarHostState.showSnackbar("Failed to set wallpaper")
+                                }
+                            }
+                        },
+                        onBoth = {
+                            coroutineScope.launch {
+                                isShowDialog = false
+                                isShowLoading = true
+                                val success = setImageToWallpaper(appContext, bitmap, WallpaperManager.FLAG_LOCK or WallpaperManager.FLAG_SYSTEM).getOrNull() ?: false
+                                isShowLoading = false
+                                if (success) {
+                                    snackBarHostState.showSnackbar("Wallpaper set successfully")
+                                } else {
+                                    snackBarHostState.showSnackbar("Failed to set wallpaper")
+                                }
+                            }
+                        }
+                    )
+                }
+
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = innerPadding.calculateBottomPadding())
+                        .padding(bottom = 30.dp)
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    Text("Set".uppercase(), style = textStyle)
+                    val textStyle = LocalTextStyle.current.copy(fontSize = 18.sp, fontFamily = mapleFamily)
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            coroutineScope.launch {
+                                isShowLoading = true
+                                val success = saveImageToGallery(appContext, wallpaperDetail.wallpaper.name, bitmap).getOrNull() ?: false
+                                isShowLoading = false
+                                if (success) {
+                                    snackBarHostState.showSnackbar("Wallpaper saved to gallery")
+                                } else {
+                                    snackBarHostState.showSnackbar("Failed to save wallpaper")
+                                }
+                            }
+                        },
+                    ) {
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                        Text("Download".uppercase(), style = textStyle)
+                    }
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = { isShowDialog = true }
+                    ) {
+                        Text("Set".uppercase(), style = textStyle)
+                    }
                 }
             }
         }
