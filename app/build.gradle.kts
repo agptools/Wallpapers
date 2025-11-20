@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.ah.wallpapers"
-        minSdk = 26
+        minSdk = 31
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -43,6 +43,7 @@ kotlin {
 }
 
 dependencies {
+    implementation("androidx.glance:glance-appwidget:1.1.1")
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
     implementation(libs.retrofit)
