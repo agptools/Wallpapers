@@ -10,4 +10,5 @@
     <color name="gradientEndColor">#5cffffff</color>
     <color name="gradientStartColor">#14ffffff</color>
     <color name="gradientBorderColor">#66ffffff</color>
+    <color name="bgColor">#fff1f1f1</color>
 </resources>

@@ -26,14 +26,51 @@
         </activity>
 
         <receiver
-            android:name=".widget.AmazonAppWidgetReceiver"
-            android:exported="true">
+            android:name=".widget.AppAmazonWidgetReceiver"
+            android:exported="true"
+            android:label="Amazon">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/amazon_app_widget_info" />
+                android:resource="@xml/app_amazon_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AppAmazonRespWidgetReceiver"
+            android:exported="true"
+            android:label="Amazon (Resp.)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_amazon_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AppCalculatorWidgetReceiver"
+            android:exported="true"
+            android:label="Calculator">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_calculator_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AppCalculatorRespWidgetReceiver"
+            android:exported="true"
+            android:label="Calculator (Resp.)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_calculator_info" />
         </receiver>
     </application>
 
