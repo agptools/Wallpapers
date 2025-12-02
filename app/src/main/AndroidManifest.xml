@@ -48,7 +48,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_amazon_info" />
         </receiver>
-
+        <!--    Calculator     -->
         <receiver
             android:name=".widget.AppCalculatorWidgetReceiver"
             android:exported="true"
@@ -72,6 +72,85 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_calculator_info" />
         </receiver>
+        <!--    Calculator     -->
+
+        <!--    Calendar     -->
+        <receiver
+            android:name=".widget.AppCalendarWidgetReceiver"
+            android:exported="true"
+            android:label="Calendar">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_calendar_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AppCalendarRespWidgetReceiver"
+            android:exported="true"
+            android:label="Calendar (Resp.)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_calendar_info" />
+        </receiver>
+        <!--    Calendar     -->
+
+        <!--    Camera     -->
+        <receiver
+            android:name=".widget.AppCameraWidgetReceiver"
+            android:exported="true"
+            android:label="Camera">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_camera_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AppCameraRespWidgetReceiver"
+            android:exported="true"
+            android:label="Camera (Resp.)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_camera_info" />
+        </receiver>
+        <!--    Camera     -->
+
+        <!--    ChatGPT     -->
+        <receiver
+            android:name=".widget.AppGPTWidgetReceiver"
+            android:exported="true"
+            android:label="ChatGPT">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_gpt_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AppGPTRespWidgetReceiver"
+            android:exported="true"
+            android:label="ChatGPT (Resp.)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_gpt_info" />
+        </receiver>
+        <!--    ChatGPT     -->
     </application>
 
 </manifest>
